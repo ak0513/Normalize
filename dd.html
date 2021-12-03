@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="./normalize.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+</head>
+<body>
+    <style>
+        *{margin:0;padding:0;box-sizing: border-box;}
+        *::before,
+        *::after{
+            box-sizing: border-box;
+        }
+        .a11y {
+            overflow: hidden;
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin:-1px;
+            border: 0;
+            clip: rect(1px,1px,1px,1px);
+            clip-path: inset(50%);
+        }
+
+        
+
+
+
+        .flex-row {
+            display:flex;
+        }
+
+
+
+        #header {
+            display:flex;
+            justify-content: space-between;
+            padding:30px 20px;
+            background-color: #f1f1f1;
+        }
+
+        #container {
+            padding:0 40px;
+            
+        }
+
+
+        #calendar {
+            flex-grow: 1;
+            border:1px solid #ddd;
+            padding:30px 0 30px 30px;
+        }
+        #calendar .calendar-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height:30px;
+            margin-right:30px;
+            padding:0 30px;
+            text-align: center;
+        }
+        #calendar .calendar-header [class*='btn'] {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            position:absolute;
+            top:0;
+            width:30px;
+            height:30px;
+            background: none;
+            border: 0px;
+            cursor: pointer;
+        }
+        #calendar .calendar-header .btn-prev {
+            left:0;
+        }
+        #calendar .calendar-header .btn-next {
+            right:0;
+        }
+       
+        #calendar table {
+            width:100%;
+        }
+
+        #calendar table thead th {
+            padding:10px;
+            text-align:left;
+            vertical-align:top;
+        }
+        #calendar table tbody td {
+            width:14.28571%;
+        }
+        #calendar table tbody td > a {
+            position: relative;
+            display:block;
+            padding:35px 10px 10px;
+            text-align:left;
+            text-decoration: none;
+            color:#000;
+        }
+        #calendar table td.current {
+            position: relative;
+        }
+        #calendar table td.current > a {
+            color:#fff;
+        }
+        #calendar table td.current::before {
+            content:'';
+            position:absolute;
+            bottom:0;
+            left:0;
+            width:30px;
+            height:30px;
+            background-color:#555;
+            border-radius: 50%;
+        }
+
+        .device-list {
+            width:200px;
+            margin-left:10px;
+            padding:10px 30px;
+            background-color:#ddd;
+            border-radius: 10px;
+        }
+
+        .device-info {
+            margin-top:30px;
+        }
+        .device-info ul li {
+            display: flex;
+            align-items: center;
+            padding:30px;
+            border:1px solid #ddd;
+            border-radius: 5px;
+        }
+        .device-info ul li + li {
+            margin-top:10px;
+        }
+        .device-info ul li.on {
+            background-color: #ddd;
+        }
+        .device-info ul li .name {
+            flex-grow: 1;
+        }
+        .device-info ul li .data {
+            margin-right:30px;
+        }
+        .device-info ul li .state {
+            position: relative;
+            width:15px;
+            height:15px;
+            border-radius: 50%;
+            background-color: transparent;
+        }
+        .device-info ul li .state.green {
+            background-color: green;
+        }
+    </style>
+
+
+    <!-- <header id="header">
+        <div class="logo">logo</div>
+        <div class="user">user</div>
+    </header> -->
+
+    <style>
+        body {
+            color:#333;
+        }
+
+
+        /* input */
+        .input-wrap {
+            position: relative;
+            width:100%;
+        }
+        
+        input[type='tel'],
+        input[type='text'],
+        input[type='email'],
+        input[type='password'],
+        input[type='search'],
+        input[type='number'] {
+            width:100%;
+            height:38px;
+            padding:0 14px;
+            border:1px solid #ddd;
+            background-color:#fff;
+            border-radius:0;
+            font-weight:400;
+            font-size:16px;
+            color:#333;
+            line-height:36px;
+            border-radius: 3px;
+        }
+       
+        /* select */
+        .select-wrap {
+            position: relative;
+            width:100%;
+        }
+        select {
+            width:100%;
+            height:38px;
+            padding:0 14px;
+            border:1px solid #ddd;
+            background-color:#fff;
+            border-radius:0;
+            font-weight:400;
+            font-size:16px;
+            color:#333;
+            border-radius: 3px;
+        }
+       
+        /* textarea */
+        textarea {
+            width: 100%;
+            padding:14px;
+            border:1px solid #ddd;
+            color:#333;
+            border-radius: 3px;
+        }
+
+        /* checkbox */
+        .check-wrap {
+            display: flex;
+        }
+        .check-wrap label {
+            position: relative;
+            cursor: pointer;
+        }
+        .check-wrap label + label {
+            margin-left:20px;
+        }
+        .check-wrap input[type='checkbox'] {
+            position:absolute;
+            top:0;
+            left:0;
+            opacity: 0;
+            width:20px;
+            height:20px;
+            border-radius: 3px;
+            appearance: none;
+        }
+        .check-wrap input[type='checkbox'] + [role='text'] {
+            overflow: hidden;
+            display:block;
+            position: relative;
+            min-height:20px;
+            padding-left:25px;
+            font-size:14px;
+        }
+        .check-wrap input[type='checkbox'] + [role='text']::before,
+        .check-wrap input[type='checkbox'] + [role='text']::after {
+            content:'';
+            display:block;
+            position:absolute;
+            border-radius: 3px;
+        }
+        .check-wrap input[type='checkbox'] + [role='text']::before {
+            top:0;
+            left:0;
+            width:20px;
+            height:20px;
+            background-color:#fff;
+            border:1px solid #ddd;
+        }
+        .check-wrap input[type='checkbox']:checked + [role='text']::after {
+            top:3px;
+            left:3px;
+            width:14px;
+            height:14px;
+            background-color:#444;
+        }
+
+
+        /* radio */
+        .radio-wrap {
+            display: flex;
+        }
+        .radio-wrap label {
+            position: relative;
+            cursor: pointer;
+        }
+        .radio-wrap label + label {
+            margin-left:20px;
+        }
+        .radio-wrap input[type='radio'] {
+            position:absolute;
+            top:0;
+            left:0;
+            opacity: 0;
+            width:20px;
+            height:20px;
+            border-radius: 50%;
+            appearance: none;
+        }
+        .radio-wrap input[type='radio'] + [role='text'] {
+            overflow: hidden;
+            display:block;
+            position: relative;
+            min-height:20px;
+            padding-left:25px;
+            font-size:14px;
+        }
+        .radio-wrap input[type='radio'] + [role='text']::before,
+        .radio-wrap input[type='radio'] + [role='text']::after {
+            content:'';
+            display:block;
+            position:absolute;
+            border-radius: 50%;
+        }
+        .radio-wrap input[type='radio'] + [role='text']::before {
+            top:0;
+            left:0;
+            width:20px;
+            height:20px;
+            background-color:#fff;
+            border:1px solid #ddd;
+        }
+        .radio-wrap input[type='radio']:checked + [role='text']::after {
+            top:4px;
+            left:4px;
+            width:12px;
+            height:12px;
+            background-color:#444;
+        }
+     </style>
+    <section id="container">
+        <div class="input-wrap">
+            <input type="text">
+        </div>
+        <br>
+        <div class="select-wrap">
+            <select name="" id="">
+                <option>dfd</option>
+                <option>dfd</option>
+                <option>dfd</option>
+                <option>dfd</option>
+            </select>
+        </div>
+        <br>
+        <textarea placeholder="메모를 입력해주세요."></textarea>
+        <br>
+        <div class="check-wrap">
+            <label for="chk1">
+                <input type="checkbox" id="chk1" name="chk1">
+                <span role="text">체크박스1</span>
+            </label>
+            <label for="chk2">
+                <input type="checkbox" id="chk2" name="chk2">
+                <span role="text">체크박스2</span>
+            </label>
+            <label for="chk3">
+                <input type="checkbox" id="chk3" name="chk3">
+                <span role="text">체크박스3</span>
+            </label>
+        </div>
+        <br>
+        <div class="radio-wrap">
+            <label for="radio1">
+                <input type="radio" id="radio1" name="radioN1">
+                <span role="text">라디오버튼1</span>
+            </label>
+            <label for="radio2">
+                <input type="radio" id="radio2" name="radioN1">
+                <span role="text">라디오버튼2</span>
+            </label>
+            <label for="radio3">
+                <input type="radio" id="radio3" name="radioN1">
+                <span role="text">라디오버튼3</span>
+            </label>
+        </div>
+
+
+
+
+        <!-- <div class="flex-row">
+            <div id="calendar">
+                <div class="calendar-header">
+                    <div class="current-month">2021.11</div>
+                    <button type="button" class="btn-prev" aria-label="이전 달">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="btn-next" aria-label="다음 달">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th scrpe="col">SUN</th>
+                            <th scrpe="col">MON</th>
+                            <th scrpe="col">TUE</th>
+                            <th scrpe="col">WED</th>
+                            <th scrpe="col">THU</th>
+                            <th scrpe="col">FRI</th>
+                            <th scrpe="col">SAT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="#">&nbsp;</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">3</a></td>
+                            <td><a href="#">4</a></td>
+                            <td><a href="#">5</a></td>
+                            <td><a href="#">6</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">7</a></td>
+                            <td><a href="#">8</a></td>
+                            <td><a href="#">9</a></td>
+                            <td><a href="#">10</a></td>
+                            <td><a href="#">11</a></td>
+                            <td><a href="#">12</a></td>
+                            <td><a href="#">13</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">14</a></td>
+                            <td><a href="#">15</a></td>
+                            <td><a href="#">16</a></td>
+                            <td><a href="#">17</a></td>
+                            <td><a href="#">18</a></td>
+                            <td><a href="#">19</a></td>
+                            <td><a href="#">20</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">21</a></td>
+                            <td><a href="#">22</a></td>
+                            <td><a href="#">23</a></td>
+                            <td><a href="#">24</a></td>
+                            <td class="current"><a href="#">25</a></td>
+                            <td><a href="#">26</a></td>
+                            <td><a href="#">27</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">28</a></td>
+                            <td><a href="#">29</a></td>
+                            <td><a href="#">30</a></td>
+                            <td><a href="#">31</a></td>
+                            <td><a href="#">&nbsp;</a></td>
+                            <td><a href="#">&nbsp;</a></td>
+                            <td><a href="#">&nbsp;</a></td>
+                        </tr>
+                </table>
+            </div>
+            <div class="device-list">
+                <ul>
+                    <li>No. 121212121</li>
+                </ul>
+            </div>
+        </div>
+        <div class="device-info">
+            <ul>
+                <li class="on">
+                    <div class="name">No. 121212</div>
+                    <div class="data">dfsdfsd</div>
+                    <div class="state green"><soan class="a11y">정상</soan></div>
+                </li>
+                <li>
+                    <div class="name">No. 121212</div>
+                    <div class="data">dfsdfsd</div>
+                    <div class="state green"><soan class="a11y">정상</soan></div>
+                </li>
+                <li>
+                    <div class="name">No. 121212</div>
+                    <div class="data">dfsdfsd</div>
+                    <div class="state green"><soan class="a11y">정상</soan></div>
+                </li>
+            </ul>
+        </div> -->
+    </section>
+</body>
+</html>
